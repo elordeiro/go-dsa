@@ -1,8 +1,10 @@
-package pq
+package tests
 
 import (
 	"container/heap"
 	"testing"
+
+	pq "github.com/elordeiro/go-container/pq"
 )
 
 func TestPriorityQueue(t *testing.T) {
@@ -34,7 +36,7 @@ func TestPriorityQueue(t *testing.T) {
 		},
 	}
 
-	minHeap := NewPriorityQueue(func(item1, item2 any) bool {
+	minHeap := pq.NewHeapFunc(func(item1, item2 any) bool {
 		return item1.(pair).priority < item2.(pair).priority
 	})
 	for _, pair := range tests[0].foods {
@@ -49,7 +51,7 @@ func TestPriorityQueue(t *testing.T) {
 		}
 	})
 
-	maxHeap := NewPriorityQueue(func(item1, item2 any) bool {
+	maxHeap := pq.NewHeapFunc(func(item1, item2 any) bool {
 		return item1.(pair).priority > item2.(pair).priority
 	})
 

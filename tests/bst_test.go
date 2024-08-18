@@ -1,6 +1,13 @@
-package binarytree
+package tests
 
-import "testing"
+import (
+	"math"
+	"testing"
+
+	bt "github.com/elordeiro/go-container/bst"
+)
+
+var null int = math.MaxInt
 
 func TestBinaryTree(t *testing.T) {
 	tests := []struct {
@@ -21,10 +28,10 @@ func TestBinaryTree(t *testing.T) {
 
 	for _, test := range tests {
 		nums1, nums2, expected := test.nums1, test.nums2, test.expected
-		root1, root2 := NewBinaryTree(nums1), NewBinaryTree(nums2)
+		root1, root2 := bt.NewBinaryTree(nums1), bt.NewBinaryTree(nums2)
 		testname := "Is SubTree"
 		t.Run(testname, func(t *testing.T) {
-			actual := IsSubtree(root1, root2)
+			actual := bt.IsSubtree(root1, root2)
 			if actual != expected {
 				t.Errorf("Actual    : %s", root1)
 				t.Errorf("Expected  : %s", root2)
@@ -49,9 +56,9 @@ func TestCompareTree(t *testing.T) {
 	for _, test := range tests {
 		testname := "Compare Trees"
 		nums1, nums2, expected := test.nums1, test.nums2, test.expected
-		root1, root2 := NewBinaryTree(nums1), NewBinaryTree(nums2)
-		actual1 := CompareTrees(root1, root2)
-		actual2 := IsSameTree(root1, root2)
+		root1, root2 := bt.NewBinaryTree(nums1), bt.NewBinaryTree(nums2)
+		actual1 := bt.CompareTrees(root1, root2)
+		actual2 := bt.IsSameTree(root1, root2)
 		t.Run(testname, func(t *testing.T) {
 			if actual1 != actual2 || actual2 != expected {
 				t.Errorf("Actual    : %s", root1)

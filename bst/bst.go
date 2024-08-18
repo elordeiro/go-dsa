@@ -1,10 +1,10 @@
-package binarytree
+package bst
 
 import (
 	"math"
 	"strconv"
 
-	deque "github.com/elordeiro/go-dsa/deque"
+	deque "github.com/elordeiro/go-container/deque"
 )
 
 var null int = math.MaxInt

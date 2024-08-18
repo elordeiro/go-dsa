@@ -7,7 +7,7 @@ func NewSet() *Set {
 	return &s
 }
 
-func (s *Set) add(item any) *Set {
+func (s *Set) Add(item any) *Set {
 	if s == nil {
 		s := make(Set)
 		s[item] = struct{}{}
@@ -17,11 +17,11 @@ func (s *Set) add(item any) *Set {
 	return s
 }
 
-func (s *Set) remove(item any) {
+func (s *Set) Remove(item any) {
 	delete(*s, item)
 }
 
-func (s *Set) contains(item any) bool {
+func (s *Set) Contains(item any) bool {
 	if s == nil {
 		return false
 	}

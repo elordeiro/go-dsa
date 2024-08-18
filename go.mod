@@ -1,3 +1,3 @@
-module github.com/elordeiro/go-dsa
+module github.com/elordeiro/go-container
 
 go 1.22

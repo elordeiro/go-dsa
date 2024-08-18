@@ -1,9 +1,13 @@
-package deque
+package tests
 
-import "testing"
+import (
+	"testing"
+
+	dq "github.com/elordeiro/go-container/deque"
+)
 
 func TestDeque(t *testing.T) {
-	dq := NewDeque()
+	dq := dq.NewDeque()
 	for i := range 10 {
 		dq.PushRight(i + 1)
 	}

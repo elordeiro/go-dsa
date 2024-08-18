@@ -6,7 +6,7 @@ type stack struct {
 	cap   int
 }
 
-func Stack() *stack {
+func NewStack() *stack {
 	return &stack{
 		stack: make([]any, 4, 4),
 		len:   0,
@@ -39,4 +39,8 @@ func (s *stack) IsEmpty() bool {
 
 func (s *stack) Peek() any {
 	return s.stack[s.len-1]
+}
+
+func (s *stack) Len() int {
+	return s.len
 }

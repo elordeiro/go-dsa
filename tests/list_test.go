@@ -1,6 +1,10 @@
-package linkedlist
+package tests
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/elordeiro/go-container/list"
+)
 
 func TestLinkedList(t *testing.T) {
 	tests := []struct {
@@ -16,10 +20,10 @@ func TestLinkedList(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		list1, list2 := CreateList(test.nums1), CreateList(test.nums2)
+		list1, list2 := list.CreateList(test.nums1), list.CreateList(test.nums2)
 		testname := "Compare Lists"
 		t.Run(testname, func(t *testing.T) {
-			if !CompareLists(list1, list2) {
+			if !list.CompareLists(list1, list2) {
 				t.Errorf("Actual   : %v", list1.ToString())
 				t.Errorf("Expected : %v", list2.ToString())
 			}
