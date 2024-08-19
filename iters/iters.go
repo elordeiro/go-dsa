@@ -1,15 +1,15 @@
 /*
-- This package provides a set of functions for working with iterators in Go.
-- Iterators are functions that yield values one at a time.
-- They are useful for processing large sequences of data without loading them all into memory at once.
-- Most of the functions in this package are inspired by Python's itertools module.
+Iters:
+  - Package iters provides a set of functions for working with iterators in Go.
+  - Iterators are functions that yield values one at a time.
+  - They are useful for processing large sequences of data without loading them all into memory at once.
+  - Most of the functions in this package are inspired by Python's itertools module.
 
+Usage:
   - Most of the functions in this package return iterators of type iter.Seq[E].
-  - If you need that iterator to be of type iter.Seq2[int, V], so that it yields index-value pairs,
-    you can use the Seq2 converter to convert it.
-
-- The Seq2 converter is similar to the enumerate function and defaults to starting at index 0.
-- If you need to start at a different index, you can use the Enumerate function.
+  - If you need that iterator to be of type iter.Seq2[int, V], so that it yields index-value pairs, you can use the Seq2 converter to convert it.
+  - If you need to start at a different index, you can use the Enumerate function.
+  - The Seq2 converter is similar to the enumerate function and defaults to starting at index 0.
 */
 package iters
 
@@ -53,14 +53,10 @@ func Seq2[V any](iterator iter.Seq[V]) iter.Seq2[int, V] {
 // int type iterators
 // ----------------------------------------------------------------------------
 
-/*
-Range:
-
-	Returns an iterator over a range of integers
-	If only one argument is provided, it is the end of the range
-	If two arguments are provided, they are the start and end of the range
-	If three arguments are provided, they are the start, end, and step of the range
-*/
+// Range returns an iterator over a range of integers.
+// If only one argument is provided, it is the end of the range.
+// If two arguments are provided, they are the start and end of the range.
+// If three arguments are provided, they are the start, end, and step of the range.
 func Range(vals ...int) iter.Seq[int] {
 	start, end, step := 0, 0, 1
 	switch len(vals) {
@@ -103,13 +99,8 @@ func Range(vals ...int) iter.Seq[int] {
 	}
 }
 
-/*
-Count:
-
-	Returns an iterator that counts up from a given integer.
-	The iterator is infinite unless it is stopped by the caller.
-*/
-
+// Count returns an iterator that counts up from a given integer.
+// The iterator is infinite unless it is stopped by the caller.
 func Count(i int) iter.Seq[int] {
 	return func(yield func(int) bool) {
 		for ; ; i++ {
@@ -124,12 +115,8 @@ func Count(i int) iter.Seq[int] {
 // Enumerate, Zip, and Seq2 are the only functions that return Seq2 iterators
 // ----------------------------------------------------------------------------
 
-/*
-Enumerate:
-
-	Returns an iterator over index-value pairs in the slice.
-	The start argument specifies the starting index.
-*/
+// Enumerate returns an iterator over index-value pairs in the slice.
+// The start argument specifies the starting index.
 func Enumerate[E any](start int, iterator iter.Seq[E]) iter.Seq2[int, E] {
 	return func(yield func(int, E) bool) {
 		next, stop := iter.Pull(iterator)
@@ -143,14 +130,10 @@ func Enumerate[E any](start int, iterator iter.Seq[E]) iter.Seq2[int, E] {
 	}
 }
 
-/*
-Zip:
-
-	Returns an iterator over pairs of values from two sequences.
-	The iteration stops when either of the sequences is exhausted.
-	In other words, the length of the resulting sequence is the minimum
-	of the lengths of the input sequences.
-*/
+// Zip returns an iterator over pairs of values from two sequences.
+// The iteration stops when either of the sequences is exhausted.
+// In other words, the length of the resulting sequence is the minimum
+// of the lengths of the input sequences.
 func Zip[V1, V2 any](seq1 iter.Seq[V1], seq2 iter.Seq[V2]) iter.Seq2[V1, V2] {
 	return func(yield func(V1, V2) bool) {
 		p1, stop := iter.Pull(seq1)
@@ -171,11 +154,7 @@ func Zip[V1, V2 any](seq1 iter.Seq[V1], seq2 iter.Seq[V2]) iter.Seq2[V1, V2] {
 // Common built-in functions
 // ----------------------------------------------------------------------------
 
-/*
-Filter:
-
-	Returns an iterator over values that satisfy the filter function.
-*/
+// Filter returns an iterator over values that satisfy the filter function.
 func Filter[E any](iterator iter.Seq[E], filterFunc func(E) bool) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
@@ -186,11 +165,7 @@ func Filter[E any](iterator iter.Seq[E], filterFunc func(E) bool) iter.Seq[E] {
 	}
 }
 
-/*
-Map:
-
-	Returns an iterator over values that are transformed by the map function.
-*/
+// Map returns an iterator over values that are transformed by the map function.
 func Map[E any](iterator iter.Seq[E], mapFunc func(E) E) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
@@ -201,11 +176,7 @@ func Map[E any](iterator iter.Seq[E], mapFunc func(E) E) iter.Seq[E] {
 	}
 }
 
-/*
-Reduce:
-
-	Returns a single value that is the result of applying the reduce function to all values in the iterator.
-*/
+// Reduce returns a single value that is the result of applying the reduce function to all values in the iterator.
 func Reduce[E any](iterator iter.Seq[E], reduceFunc func(E, E) E) E {
 	var accum E
 	for v := range iterator {
@@ -218,11 +189,7 @@ func Reduce[E any](iterator iter.Seq[E], reduceFunc func(E, E) E) E {
 // Common itertools functions
 // ----------------------------------------------------------------------------
 
-/*
-Cycle:
-
-	Returns an iterator that cycles through the values of the input iterator.
-*/
+// Cycle returns an iterator that cycles through the values of the input iterator.
 func Cycle[E any](iterator iter.Seq[E]) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for {
@@ -236,12 +203,8 @@ func Cycle[E any](iterator iter.Seq[E]) iter.Seq[E] {
 	}
 }
 
-/*
-Repeat:
-
-	Returns an iterator that yields the same value n times.
-	If n is not provided, the iterator is infinite.
-*/
+// Repeat returns an iterator that yields the same value n times.
+// If n is not provided, the iterator is infinite.
 func Repeat[E any](val E, end ...int) iter.Seq[E] {
 	stop := -1
 	if len(end) > 0 {
@@ -256,11 +219,7 @@ func Repeat[E any](val E, end ...int) iter.Seq[E] {
 	}
 }
 
-/*
-Chain:
-
-	Returns an iterator that chains the values of multiple input iterators.
-*/
+// Chain returns an iterator that chains the values of multiple input iterators.
 func Chain[E any](iterators ...iter.Seq[E]) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for _, iterator := range iterators {
@@ -273,11 +232,7 @@ func Chain[E any](iterators ...iter.Seq[E]) iter.Seq[E] {
 	}
 }
 
-/*
-Take:
-
-	Returns an iterator that yields the first n values of the input iterator.
-*/
+// Take returns an iterator that yields the first n values of the input iterator.
 func Take[E any](n int, iterator iter.Seq[E]) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		i := 0
@@ -293,11 +248,7 @@ func Take[E any](n int, iterator iter.Seq[E]) iter.Seq[E] {
 	}
 }
 
-/*
-Drop:
-
-	Returns an iterator that skips the first n values of the input iterator.
-*/
+// Drop returns an iterator that skips the first n values of the input iterator.
 func Drop[E any](n int, iterator iter.Seq[E]) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		i := 0
@@ -318,11 +269,7 @@ func Drop[E any](n int, iterator iter.Seq[E]) iter.Seq[E] {
 // Common functool functions
 // ----------------------------------------------------------------------------
 
-/*
-TakeWhile:
-
-	Returns an iterator that yields values from the input iterator until the predicate is false.
-*/
+// TakeWhile returns an iterator that yields values from the input iterator until the predicate is false.
 func TakeWhile[E any](iterator iter.Seq[E], predicate func(E) bool) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
@@ -333,11 +280,7 @@ func TakeWhile[E any](iterator iter.Seq[E], predicate func(E) bool) iter.Seq[E] 
 	}
 }
 
-/*
-DropWhile:
-
-	Returns an iterator that skips values from the input iterator until the predicate is false.
-*/
+// DropWhile returns an iterator that skips values from the input iterator until the predicate is false.
 func DropWhile[E any](iterator iter.Seq[E], predicate func(E) bool) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		dropping := true
@@ -353,11 +296,7 @@ func DropWhile[E any](iterator iter.Seq[E], predicate func(E) bool) iter.Seq[E] 
 	}
 }
 
-/*
-With:
-
-	Returns an iterator that calls a function on each value before yielding it.
-*/
+// With returns an iterator that calls a function on each value before yielding it.
 func With[E any](iterator iter.Seq[E], processor func(E) E) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
@@ -368,12 +307,8 @@ func With[E any](iterator iter.Seq[E], processor func(E) E) iter.Seq[E] {
 	}
 }
 
-/*
-Else:
-
-	Returns an iterator that calls an else function only if the iterator is not exhausted.
-	Similar to a for ... else block in Python.
-*/
+// Else returns an iterator that calls an else function only if the iterator is not exhausted.
+// Similar to a for ... else block in Python.
 func Else[E any](iterator iter.Seq[E], callback func()) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
