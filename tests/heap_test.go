@@ -4,7 +4,7 @@ import (
 	"container/heap"
 	"testing"
 
-	pq "github.com/elordeiro/go-container/pq"
+	pq "github.com/elordeiro/go/dsa/pq"
 )
 
 func TestPriorityQueue(t *testing.T) {

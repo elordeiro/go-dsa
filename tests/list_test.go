@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/elordeiro/go-container/list"
+	"github.com/elordeiro/go/dsa/list"
 )
 
 func TestLinkedList(t *testing.T) {

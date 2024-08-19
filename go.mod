@@ -1,3 +1,3 @@
-module github.com/elordeiro/go-container
+module github.com/elordeiro/go
 
-go 1.22
+go 1.23

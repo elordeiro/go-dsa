@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	bt "github.com/elordeiro/go-container/bst"
+	bt "github.com/elordeiro/go/dsa/bst"
 )
 
 var null int = math.MaxInt

@@ -4,7 +4,7 @@ import (
 	"math"
 	"strconv"
 
-	deque "github.com/elordeiro/go-container/deque"
+	deque "github.com/elordeiro/go/dsa/deque"
 )
 
 var null int = math.MaxInt

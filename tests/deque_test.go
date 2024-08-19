@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	dq "github.com/elordeiro/go-container/deque"
+	dq "github.com/elordeiro/go/dsa/deque"
 )
 
 func TestDeque(t *testing.T) {
