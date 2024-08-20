@@ -85,6 +85,6 @@ Contributions to the `iters` package are welcome. If you have an idea for a new 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
 
 ---

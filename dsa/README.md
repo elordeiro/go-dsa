@@ -45,4 +45,4 @@ This package contains some of the most common data structures and algorithms imp
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
