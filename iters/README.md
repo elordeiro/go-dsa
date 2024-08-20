@@ -67,9 +67,19 @@ import (
 )
 
 func main() {
-    for v := itr.Map(itr.Range(1, 6), func(x int) int { return x * 2 }) {
-        fmt.Println(v) // Output: 2 4 6 8 10
+    square := func(x int) int { return x * x }
+    for v := itr.Map(itr.Range(1, 6), square) {
+        fmt.Print(v, " ")
+        // Output: 1 4 9 16 25
     }
+
+    sum := func(a, b int) int { return a + b }
+    fmt.Println(itr.Reduce(itr.Range(1, 6), sum)) // Output: 15
+
+    for v := range itr.Take(9, itr.Cycle(itr.Range(0, 3))) {
+		fmt.Print(v, " ")
+	}
+    // Output: 0 1 2 0 1 2 0 1 2
 }
 ```
 
