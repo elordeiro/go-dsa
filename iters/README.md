@@ -70,16 +70,33 @@ func main() {
     square := func(x int) int { return x * x }
     for v := itr.Map(itr.Range(1, 6), square) {
         fmt.Print(v, " ")
-        // Output: 1 4 9 16 25
     }
+    // Output: 1 4 9 16 25
+
+    //--------------------------------
 
     sum := func(a, b int) int { return a + b }
-    fmt.Println(itr.Reduce(itr.Range(1, 6), sum)) // Output: 15
+    fmt.Println(itr.Reduce(itr.Range(1, 6), sum))
+    // Output: 15
+
+    //--------------------------------
 
     for v := range itr.Take(9, itr.Cycle(itr.Range(0, 3))) {
 		fmt.Print(v, " ")
 	}
     // Output: 0 1 2 0 1 2 0 1 2
+
+    //--------------------------------
+
+    slice1 := []int{1, 2, 3}
+	slice2 := []string{"a", "b", "c"}
+	seq1 := slices.Values(slice1)
+	seq2 := slices.Values(slice2)
+	for v1, v2 := range itr.Zip(seq1, seq2) {
+		fmt.Printf("%d:%s ", v1, v2)
+	}
+	fmt.Println()
+	// Output: 1:a 2:b 3:c
 }
 ```
 
