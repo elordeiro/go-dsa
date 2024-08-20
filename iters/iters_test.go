@@ -1,4 +1,4 @@
-package tests
+package iters_test
 
 import (
 	"slices"
@@ -544,17 +544,15 @@ func TestDropWhile(t *testing.T) {
 	}
 }
 func TestWith(t *testing.T) {
-	expected := []int{2, 3, 4, 5, 6}
-	result := []int{}
+	expected := []int{}
+	result := []int{1, 1, 2, 2, 3, 3, 4, 4, 5, 5}
 
-	withFunc := func(v int) int {
-		// Add 1 to each value before yielding
-		v++
-		return v
+	withFunc := func() {
+		result = result[:len(result)-1]
 	}
 
-	for v := range itr.With(itr.Range(1, 6), withFunc) {
-		result = append(result, v)
+	for range itr.With(itr.Range(1, 6), withFunc) {
+		result = result[:len(result)-1]
 	}
 
 	if len(expected) != len(result) {
