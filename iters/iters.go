@@ -1,16 +1,4 @@
-/*
-Iters:
-  - Package iters provides a set of functions for working with iterators in Go.
-  - Iterators are functions that yield values one at a time.
-  - They are useful for processing large sequences of data without loading them all into memory at once.
-  - Most of the functions in this package are inspired by Python's itertools module.
-
-Usage:
-  - Most of the functions in this package return iterators of type iter.Seq[E].
-  - If you need that iterator to be of type iter.Seq2[int, V], so that it yields index-value pairs, you can use the Seq2 converter to convert it.
-  - If you need to start at a different index, you can use the Enumerate function.
-  - The Seq2 converter is similar to the enumerate function and defaults to starting at index 0.
-*/
+// Iters package provides a set of functions that operate on iterators.
 package iters
 
 import (
@@ -34,6 +22,7 @@ func Seq1[E any, K comparable](iterator iter.Seq2[K, E]) iter.Seq[E] {
 }
 
 // Seq2 converts an iterator over values to an iterator over index-value pairs.
+// For indices that don't start at 0, use Enumerate.
 func Seq2[V any](iterator iter.Seq[V]) iter.Seq2[int, V] {
 	return func(yield func(int, V) bool) {
 		next, stop := iter.Pull(iterator)
@@ -178,11 +167,11 @@ func Map[E any](iterator iter.Seq[E], mapFunc func(E) E) iter.Seq[E] {
 
 // Reduce returns a single value that is the result of applying the reduce function to all values in the iterator.
 func Reduce[E any](iterator iter.Seq[E], reduceFunc func(E, E) E) E {
-	var accum E
+	var acc E
 	for v := range iterator {
-		accum = reduceFunc(accum, v)
+		acc = reduceFunc(acc, v)
 	}
-	return accum
+	return acc
 }
 
 // ----------------------------------------------------------------------------
@@ -211,7 +200,7 @@ func Repeat[E any](val E, end ...int) iter.Seq[E] {
 		stop = end[0]
 	}
 	return func(yield func(E) bool) {
-		for i := 0; i < stop; i++ {
+		for i := 0; i != stop; i++ {
 			if !yield(val) {
 				return
 			}
@@ -296,11 +285,12 @@ func DropWhile[E any](iterator iter.Seq[E], predicate func(E) bool) iter.Seq[E] 
 	}
 }
 
-// With returns an iterator that calls a function on each value before yielding it.
-func With[E any](iterator iter.Seq[E], processor func(E) E) iter.Seq[E] {
+// With returns an iterator that calls a function on each iteration before yielding it.
+func With[E any](iterator iter.Seq[E], process func()) iter.Seq[E] {
 	return func(yield func(E) bool) {
 		for v := range iterator {
-			if !yield(processor(v)) {
+			process()
+			if !yield(v) {
 				return
 			}
 		}

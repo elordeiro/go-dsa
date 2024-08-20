@@ -351,7 +351,7 @@ func TestRepeat(t *testing.T) {
 	result = []int{}
 
 	i := 0
-	for v := range itr.Repeat(5, 5) {
+	for v := range itr.Repeat(5) {
 		if i == 5 {
 			break
 		}
