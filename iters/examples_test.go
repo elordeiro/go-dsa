@@ -7,12 +7,12 @@ import (
 	itr "github.com/elordeiro/go/iters"
 )
 
-func ExampleSeq1() {
+func ExampleSeq() {
 	slice := []int{1, 2, 3, 4, 5}
 	// seq.Seq2[K, E]
 	seq2 := slices.All(slice)
 	// seq.Seq[E]
-	seq1 := itr.Seq1(seq2)
+	seq1 := itr.ToSeq(seq2)
 	for v := range seq1 {
 		fmt.Print(v, " ")
 	}
@@ -25,7 +25,7 @@ func ExampleSeq2() {
 	// seq.Seq[E]
 	seq1 := slices.Values(slice)
 	// seq.Seq2[int, E]
-	seq2 := itr.Seq2(seq1)
+	seq2 := itr.ToSeq2(seq1)
 	for i, v := range seq2 {
 		fmt.Printf("%d:%d ", i, v)
 	}
@@ -142,7 +142,7 @@ func ExampleReduce() {
 
 func ExampleCycle() {
 	max := 5
-	for i, v := range itr.Seq2(itr.Cycle(itr.Range(3))) {
+	for i, v := range itr.ToSeq2(itr.Cycle(itr.Range(3))) {
 		if i >= max {
 			break
 		}
@@ -154,7 +154,7 @@ func ExampleCycle() {
 
 func ExampleRepeat() {
 	max := 5
-	for i, v := range itr.Seq2(itr.Repeat(3)) {
+	for i, v := range itr.ToSeq2(itr.Repeat(3)) {
 		if i >= max {
 			break
 		}
@@ -243,7 +243,7 @@ func ExampleWith() {
 func ExampleElse() {
 	slice := []int{1, 2, 3, 4, 5}
 	Else := func() { slice = []int{100} }
-	for i, v := range itr.Seq2(itr.Else(slices.Values(slice), Else)) {
+	for i, v := range itr.ToSeq2(itr.Else(slices.Values(slice), Else)) {
 		if v == 5 {
 			break
 		}
@@ -256,7 +256,7 @@ func ExampleElse() {
 func ExampleElse_true() {
 	slice := []int{1, 2, 3, 4, 5}
 	Else := func() { slice = []int{100} }
-	for i, v := range itr.Seq2(itr.Else(slices.Values(slice), Else)) {
+	for i, v := range itr.ToSeq2(itr.Else(slices.Values(slice), Else)) {
 		if v == 10 {
 			break
 		}

@@ -28,6 +28,12 @@ Import the package in your Go code:
 import "github.com/elordeiro/go/iters"
 ```
 
+or
+
+```go
+import itr "github.com/elordeiro/go/iters"
+```
+
 ## Usage
 
 -   Most of the functions in this package return iterators of type `iter.Seq[E]`.

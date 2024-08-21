@@ -7,11 +7,11 @@ import (
 	itr "github.com/elordeiro/go/iters"
 )
 
-func TestSeq1(t *testing.T) {
+func TestSeq(t *testing.T) {
 	expected := []int{10, 20, 30, 40, 50}
 	result := []int{}
 
-	for v := range itr.Seq1(slices.All([]int{10, 20, 30, 40, 50})) {
+	for v := range itr.ToSeq(slices.All([]int{10, 20, 30, 40, 50})) {
 		result = append(result, v)
 	}
 
@@ -42,7 +42,7 @@ func TestSeq2(t *testing.T) {
 		value int
 	}{}
 
-	for i, v := range itr.Seq2(slices.Values([]int{10, 20, 30, 40, 50})) {
+	for i, v := range itr.ToSeq2(slices.Values([]int{10, 20, 30, 40, 50})) {
 		result = append(result, struct {
 			index int
 			value int
@@ -185,7 +185,29 @@ func TestEnumerate(t *testing.T) {
 		value int
 	}{}
 
-	for i, v := range itr.Enumerate(2, slices.Values([]int{10, 20, 30, 40, 50})) {
+	for i, v := range itr.SliceValues([]int{10, 20, 30, 40, 50}).Enumerate(2) {
+		result = append(result, struct {
+			index int
+			value int
+		}{i, v})
+	}
+
+	if len(expected) != len(result) {
+		t.Error("Expected and result slices should have the same length")
+	}
+
+	for i := range expected {
+		if expected[i].index != result[i].index || expected[i].value != result[i].value {
+			t.Errorf("Expected (%d, %d) but got (%d, %d)", expected[i].index, expected[i].value, result[i].index, result[i].value)
+		}
+	}
+
+	result = []struct {
+		index int
+		value int
+	}{}
+
+	for i, v := range itr.Enumerate(itr.SliceValues([]int{10, 20, 30, 40, 50}), 2) {
 		result = append(result, struct {
 			index int
 			value int
@@ -245,7 +267,7 @@ func TestFilter(t *testing.T) {
 		return v%2 == 0
 	}
 
-	for v := range itr.Filter(itr.Range(1, 11), filterFunc) {
+	for v := range itr.Range(1, 11).Filter(filterFunc) {
 		result = append(result, v)
 	}
 
@@ -268,7 +290,7 @@ func TestMap(t *testing.T) {
 		return v * v
 	}
 
-	for v := range itr.Map(itr.Range(2, 7), mapFunc) {
+	for v := range itr.Range(2, 7).Map(mapFunc) {
 		result = append(result, v)
 	}
 
@@ -284,7 +306,7 @@ func TestMap(t *testing.T) {
 }
 func TestReduce(t *testing.T) {
 	expected := 55
-	result := itr.Reduce(itr.Range(1, 11), func(acc, v int) int {
+	result := itr.Range(1, 11).Reduce(func(acc, v int) int {
 		return acc + v
 	})
 
@@ -293,7 +315,7 @@ func TestReduce(t *testing.T) {
 	}
 
 	expected = 50
-	result = itr.Reduce(slices.Values([]int{20, 10, 50, 33, 40, 49}), func(a, b int) int {
+	result = itr.SliceValues([]int{20, 10, 50, 33, 40, 49}).Reduce(func(a, b int) int {
 		if a > b {
 			return a
 		}
@@ -313,7 +335,7 @@ func TestCycle(t *testing.T) {
 		return len(result) != 9
 	}
 
-	for v := range itr.Cycle(itr.Range(1, 4)) {
+	for v := range itr.Range(1, 4).Cycle() {
 		if !cycleFunc(v) {
 			break
 		}
@@ -395,7 +417,7 @@ func TestTake(t *testing.T) {
 	expected := []int{10, 20, 30, 40, 50}
 	result := []int{}
 
-	for v := range itr.Take(5, itr.Range(10, 60, 10)) {
+	for v := range itr.Range(10, 60, 10).Take(5) {
 		result = append(result, v)
 	}
 
@@ -412,7 +434,7 @@ func TestTake(t *testing.T) {
 	expected = []int{10, 20, 30}
 	result = []int{}
 
-	for v := range itr.Take(3, itr.Range(10, 60, 10)) {
+	for v := range itr.Range(10, 60, 10).Take(3) {
 		result = append(result, v)
 	}
 
@@ -429,7 +451,7 @@ func TestTake(t *testing.T) {
 	expected = []int{}
 	result = []int{}
 
-	for v := range itr.Take(0, itr.Range(10, 60, 10)) {
+	for v := range itr.Range(10, 60, 10).Take(0) {
 		result = append(result, v)
 	}
 
@@ -447,7 +469,7 @@ func TestDrop(t *testing.T) {
 	expected := []int{30, 40, 50}
 	result := []int{}
 
-	for v := range itr.Drop(2, itr.Range(10, 60, 10)) {
+	for v := range itr.Range(10, 60, 10).Drop(2) {
 		result = append(result, v)
 	}
 
@@ -464,7 +486,7 @@ func TestDrop(t *testing.T) {
 	expected = []int{10, 20, 30, 40, 50}
 	result = []int{}
 
-	for v := range itr.Drop(0, itr.Range(10, 60, 10)) {
+	for v := range itr.Range(10, 60, 10).Drop(0) {
 		result = append(result, v)
 	}
 
@@ -486,7 +508,7 @@ func TestTakeWhile(t *testing.T) {
 		return v <= 10
 	}
 
-	for v := range itr.TakeWhile(itr.Range(2, 11, 2), predicate) {
+	for v := range itr.Range(2, 11, 2).TakeWhile(predicate) {
 		result = append(result, v)
 	}
 
@@ -507,7 +529,7 @@ func TestTakeWhile(t *testing.T) {
 		return v > 10
 	}
 
-	for v := range itr.TakeWhile(itr.Range(1, 11), predicate) {
+	for v := range itr.Range(1, 11).TakeWhile(predicate) {
 		result = append(result, v)
 	}
 
@@ -529,7 +551,7 @@ func TestDropWhile(t *testing.T) {
 		return v < 30
 	}
 
-	for v := range itr.DropWhile(itr.Range(10, 60, 10), predicate) {
+	for v := range itr.Range(10, 60, 10).DropWhile(predicate) {
 		result = append(result, v)
 	}
 
@@ -551,7 +573,7 @@ func TestWith(t *testing.T) {
 		result = result[:len(result)-1]
 	}
 
-	for range itr.With(itr.Range(1, 6), withFunc) {
+	for range itr.Range(1, 6).With(withFunc) {
 		result = result[:len(result)-1]
 	}
 
@@ -574,7 +596,7 @@ func TestElse(t *testing.T) {
 		t.Error("Else function should not be called")
 	}
 
-	for v := range itr.Else(iterator, elseFunc) {
+	for v := range iterator.Else(elseFunc) {
 		result = append(result, v)
 		break
 	}
@@ -597,7 +619,7 @@ func TestElse(t *testing.T) {
 		result = append(result, 0)
 	}
 
-	for v := range itr.Else(iterator, elseFunc) {
+	for v := range iterator.Else(elseFunc) {
 		result = append(result, v)
 	}
 
