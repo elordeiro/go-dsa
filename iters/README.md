@@ -1,7 +1,7 @@
 # Iters Package
 
 > `Go Docs`  
-> [![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/go@v0.0.0-20240819050135-7f0a3c34749a/iters.svg)](https://pkg.go.dev/github.com/elordeiro/go@v0.0.0-20240819050135-7f0a3c34749a/iters)
+> [![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/go/iters.svg)](https://pkg.go.dev/github.com/elordeiro/go/iters)
 
 ## Overview
 
@@ -30,7 +30,7 @@ import "github.com/elordeiro/go/iters"
 or
 
 ```go
-import itr "github.com/elordeiro/go/iters"
+import it "github.com/elordeiro/go/iters"
 ```
 
 ## Usage
@@ -168,7 +168,7 @@ package main
 
 import (
     "fmt"
-    itr "github.com/elordeiro/go/iters"
+    it "github.com/elordeiro/go/iters"
 )
 
 func main() {
@@ -205,7 +205,7 @@ package main
 
 import (
     "fmt"
-    itr "github.com/elordeiro/go/iters"
+    it "github.com/elordeiro/go/iters"
 )
 
 func main() {
@@ -260,6 +260,6 @@ Contributions to the `iters` package are welcome. If you have an idea for a new 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
+This project is licensed under the BSD-3 License. See the [LICENSE](../LICENSE) file for details.
 
 ---
