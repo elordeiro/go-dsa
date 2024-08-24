@@ -1,4 +1,4 @@
-package containers_test
+package stack_test
 
 import (
 	"testing"
