@@ -1,7 +1,6 @@
-# Iters Package
+[![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/go/iters.svg)](https://pkg.go.dev/github.com/elordeiro/go/iters) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](../LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/elordeiro/go)](https://goreportcard.com/report/github.com/elordeiro/go) [![Release](https://img.shields.io/github/v/release/elordeiro/go)]()
 
-> `Go Docs`  
-> [![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/go/iters.svg)](https://pkg.go.dev/github.com/elordeiro/go/iters)
+# Iters Package
 
 ## Overview
 
@@ -147,8 +146,8 @@ func main() {
 
     result := ""
     i := 31
-    Else := func() { result = fmt.Sprint(i, " is prime") }
-    for range it.OrElse(it.Range(2, i), Else) {
+    do := func() { result = fmt.Sprint(i, " is prime") }
+    for range it.OnEmpty(it.Range(2, i), do) {
         if i%2 == 0 {
             result = fmt.Sprint(i, " is not prime")
             break
@@ -172,8 +171,8 @@ import (
 )
 
 func main() {
-    square := func(x int) int { return x * x }
-    for v := range it.Map(it.Range(6), square) {
+    sqr := func(x int) int { return x * x }
+    for v := range it.Map(it.Range(6), sqr) {
         fmt.Print(v, " ")
     }
     fmt.Println()
@@ -208,8 +207,10 @@ import (
     it "github.com/elordeiro/go/iters"
 )
 
+
 func main() {
     type IntSlice []int
+
     slice := it.Iterable(IntSlice{1, 2, 3, 4, 5})
     fmt.Println(slice)
     // Output: ItSlice[int][1 2 3 4 5]
