@@ -68,7 +68,7 @@ func main() {
 		type IntSlice []int
 		slice := it.Iterable(IntSlice{1, 2, 3, 4, 5})
 		fmt.Println(slice)
-		// Output: GSlice[int][1 2 3 4 5]
+		// Output: ItSlice[int][1 2 3 4 5]
 
 		slice2 := it.Iterable([]string{"a", "b", "c"})
 		for i, v := range it.Enumerate(1, slice2) {

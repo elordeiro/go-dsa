@@ -75,7 +75,7 @@ For converting standard library iterators to be used within this package use:
 
 ### The following functions have a `func2()` version.
 
-> Itertools:
+> **_Itertools_**:
 
 -   **Enumerate()**: Enumerate returns a `Seq2` iterator with an index attached to each value starting from a given index.
     -   For a `Seq` or `ItSlice`, it returns an index-value iterator.
@@ -93,7 +93,7 @@ For converting standard library iterators to be used within this package use:
 -   **TakeBetween()**: TakeBetween returns an iterator that takes elements between two indices (inclusive).
 -   **Rotate()**: Rotate returns an iterator that rotates the elements of the iterator, shifting them to the left or right.
 
-> Functional:
+> **_Functional_**:
 
 -   **Filter()**: Filter returns an iterator whose elements satisfy the predicate.
 -   **Map()**: Map returns an iterator that applies a function to each element.
@@ -119,12 +119,6 @@ For converting standard library iterators to be used within this package use:
 -   **All()**: All returns true if all elements in the iterator satisfy the predicate.
 -   **Any()**: Any returns true if any element in the iterator satisfies the predicate.
 -   **None()**: None returns true if no element in the iterator satisfies the predicate.
-
-## Changes
-
--   **RangeIter()**: Returns an iterator over a range of value
--   rename else to onempty
--   fix with
 
 ## Examples
 
