@@ -3,12 +3,12 @@ package pq_test
 import (
 	"fmt"
 
-	pq "github.com/elordeiro/go/container/pq"
+	"github.com/elordeiro/go/container/pq"
 )
 
 func ExampleNewMaxHeap() {
 	pq := pq.NewMaxHeap(7, 3, 1, 5)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -20,7 +20,7 @@ func ExampleNewMaxHeap() {
 
 func ExampleNewMinHeap() {
 	pq := pq.NewMinHeap(7, 3, 1, 5)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -40,7 +40,7 @@ func ExampleNewPqFunc() {
 	pq.Push(pair{"apple", 1})
 	pq.Push(pair{"grape", 5})
 
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -59,7 +59,7 @@ func ExamplePq_Len() {
 func ExamplePq_Push() {
 	pq := pq.NewMaxHeap(7, 3, 1, 5)
 	pq.Push(9)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -103,9 +103,9 @@ func ExamplePq_IsEmpty() {
 	// false
 }
 
-func ExamplePq_Values() {
+func ExamplePq_All() {
 	pq := pq.NewMaxHeap(7, 3, 1, 5)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -115,9 +115,9 @@ func ExamplePq_Values() {
 	// 1
 }
 
-func ExamplePq_All() {
+func ExamplePq_Enumerate() {
 	pq := pq.NewMaxHeap(7, 3, 1, 5)
-	for i, v := range pq.All() {
+	for i, v := range pq.Enumerate(0) {
 		fmt.Println(i, v)
 	}
 	fmt.Println(pq.IsEmpty())
@@ -132,7 +132,7 @@ func ExamplePq_All() {
 func ExamplePq_Remove() {
 	pq := pq.NewMaxHeap(7, 3, 1, 5)
 	fmt.Println(pq.Remove(1))
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -152,7 +152,7 @@ func ExamplePq_Clear() {
 func ExamplePq_Update() {
 	pq := pq.NewMaxHeap(9, 3, 5, 7)
 	pq.Update(0, 1)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -167,7 +167,7 @@ func ExamplePq_UpdateLess() {
 	pq.UpdateLess(func(item1, item2 int) bool {
 		return item1 < item2
 	})
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:
@@ -180,7 +180,7 @@ func ExamplePq_UpdateLess() {
 func ExamplePq_UpdateAll() {
 	pq := pq.NewMaxHeap(9, 3, 5, 7)
 	pq.UpdateAll(1, 2, 3, 4)
-	for v := range pq.Values() {
+	for v := range pq.All() {
 		fmt.Println(v)
 	}
 	// Output:

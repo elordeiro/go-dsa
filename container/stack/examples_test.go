@@ -8,24 +8,41 @@ import (
 
 func ExampleStack() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
-	fmt.Println(s)
-	// Output: [5 4 3 2 1]
+	for v := range s.All() {
+		fmt.Println(v)
+	}
+	// Output:
+	// 5
+	// 4
+	// 3
+	// 2
+	// 1
 }
 
 func ExampleStack_Push() {
-	s := stk.NewStack(1, 2, 3, 4, 5)
-	s.Push(6, 7, 8)
-	fmt.Println(s)
-	// Output: [8 7 6 5 4 3 2 1]
+	s := stk.NewStack(1, 2, 3)
+	s.Push(4, 5, 6)
+	for v := range s.All() {
+		fmt.Println(v)
+	}
+	// Output:
+	// 6
+	// 5
+	// 4
+	// 3
+	// 2
+	// 1
 }
 
 func ExampleStack_Pop() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
 	fmt.Println(s.Pop())
-	fmt.Println(s)
+	fmt.Println(s.Pop())
+	fmt.Println(s.Pop())
 	// Output:
 	// 5
-	// [4 3 2 1]
+	// 4
+	// 3
 }
 
 func ExampleStack_IsEmpty() {
@@ -42,10 +59,11 @@ func ExampleStack_IsEmpty() {
 func ExampleStack_Peek() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
 	fmt.Println(s.Peek())
-	fmt.Println(s)
+	s.Pop()
+	fmt.Println(s.Peek())
 	// Output:
 	// 5
-	// [5 4 3 2 1]
+	// 4
 }
 
 func ExampleStack_Len() {
@@ -54,9 +72,9 @@ func ExampleStack_Len() {
 	// Output: 5
 }
 
-func ExampleStack_All() {
+func ExampleStack_Enumerate() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
-	s.All()(func(i int, v int) bool {
+	s.Enumerate(0)(func(i int, v int) bool {
 		fmt.Println(i, v)
 		return true
 	})
@@ -70,9 +88,9 @@ func ExampleStack_All() {
 	// true
 }
 
-func ExampleStack_Values() {
+func ExampleStack_All() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
-	s.Values()(func(v int) bool {
+	s.All()(func(v int) bool {
 		fmt.Println(v)
 		return true
 	})

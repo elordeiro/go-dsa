@@ -89,14 +89,14 @@ func TestMinPqFunc(t *testing.T) {
 	})
 }
 
-func TestPqAll(t *testing.T) {
+func TestPqEnumerate(t *testing.T) {
 	expected := []string{"apple", "banana", "grape", "orange"}
 	test := []string{"banana", "orange", "apple", "grape"}
 
 	pq := pq.NewMinHeap(test...)
 
 	t.Run("Testing all pq", func(t *testing.T) {
-		for i, actual := range pq.All() {
+		for i, actual := range pq.Enumerate(0) {
 			if actual != expected[i] {
 				t.Errorf("Test Failed\n\tActual  : %v\n\tExpected: %v\n", actual, expected[i])
 			}
@@ -120,7 +120,7 @@ func TestPqUpdate(t *testing.T) {
 	pq.Update(2, pair{"apple", 10})
 
 	t.Run("Testing update pq", func(t *testing.T) {
-		for i, actual := range pq.All() {
+		for i, actual := range pq.Enumerate(0) {
 			if actual.fruit != expected[i] {
 				t.Errorf("Test Failed\n\tActual  : %v\n\tExpected: %v\n", actual, expected[i])
 			}
@@ -146,7 +146,7 @@ func TestPqUpdateLess(t *testing.T) {
 	})
 
 	t.Run("Testing update pq less", func(t *testing.T) {
-		for i, actual := range pq.All() {
+		for i, actual := range pq.Enumerate(0) {
 			if actual.fruit != expected[i] {
 				t.Errorf("Test Failed\n\tActual  : %v\n\tExpected: %v\n", actual, expected[i])
 			}
@@ -175,7 +175,7 @@ func TestPqUpdateAll(t *testing.T) {
 	}...)
 
 	t.Run("Testing update all pq", func(t *testing.T) {
-		for i, actual := range pq.All() {
+		for i, actual := range pq.Enumerate(0) {
 			if actual.fruit != expected[i] {
 				t.Errorf("Test Failed\n\tActual  : %v\n\tExpected: %v\n", actual, expected[i])
 			}

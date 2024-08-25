@@ -2,6 +2,7 @@ package pq
 
 import (
 	"container/heap"
+	"fmt"
 	"iter"
 
 	"golang.org/x/exp/constraints"
@@ -45,7 +46,7 @@ type Pq[V any] struct {
 
 // NewMaxHeap creates a new max heap. If vals are provided, they are added to the heap,
 // and the heap is initialized. The heap is initialized with the default less function
-func NewMaxHeap[V Ord](vals ...V) *Pq[V] {
+func NewMaxHeap[V Ord](vals ...V) Pq[V] {
 	if vals == nil {
 		vals = []V{}
 	}
@@ -55,12 +56,12 @@ func NewMaxHeap[V Ord](vals ...V) *Pq[V] {
 	}
 	heap.Init(pq)
 
-	return &Pq[V]{pq}
+	return Pq[V]{pq}
 }
 
 // NewMinHeap creates a new min heap. If vals are provided, they are added to the heap,
 // and the heap is initialized. The heap is initialized with the default less function
-func NewMinHeap[V Ord](vals ...V) *Pq[V] {
+func NewMinHeap[V Ord](vals ...V) Pq[V] {
 	if vals == nil {
 		vals = []V{}
 	}
@@ -70,12 +71,12 @@ func NewMinHeap[V Ord](vals ...V) *Pq[V] {
 	}
 	heap.Init(pq)
 
-	return &Pq[V]{pq}
+	return Pq[V]{pq}
 }
 
 // NewPqFunc creates a new priority queue. If vals are provided, they are added to the heap,
 // and the heap is initialized. The heap is initialized with the provided less function
-func NewPqFunc[V any](less func(item1, item2 V) bool, vals ...V) *Pq[V] {
+func NewPqFunc[V any](less func(item1, item2 V) bool, vals ...V) Pq[V] {
 	if vals == nil {
 		vals = []V{}
 	}
@@ -85,28 +86,28 @@ func NewPqFunc[V any](less func(item1, item2 V) bool, vals ...V) *Pq[V] {
 	}
 	heap.Init(pq)
 
-	return &Pq[V]{pq}
+	return Pq[V]{pq}
 }
 
 // Len returns the number of elements in the priority queue
-func (pq *Pq[V]) Len() int {
+func (pq Pq[V]) Len() int {
 	return pq.Internal.Len()
 }
 
 // Push adds an element to the priority queue
-func (pq *Pq[V]) Push(val V) {
+func (pq Pq[V]) Push(val V) {
 	heap.Push(pq.Internal, val)
 }
 
 // Pop removes and returns the element with the highest priority
-func (pq *Pq[V]) Pop() V {
+func (pq Pq[V]) Pop() V {
 	return heap.Pop(pq.Internal).(V)
 }
 
 // Peek returns the element with the highest priority without removing it.
 // If the priority queue is empty, this function panics. Use IsEmpty to check if the
 // priority queue is empty before calling Peek
-func (pq *Pq[V]) Peek() V {
+func (pq Pq[V]) Peek() V {
 	if pq.IsEmpty() {
 		panic("Pq is empty")
 	}
@@ -114,13 +115,50 @@ func (pq *Pq[V]) Peek() V {
 }
 
 // IsEmpty returns true if the priority queue is empty
-func (pq *Pq[V]) IsEmpty() bool {
+func (pq Pq[V]) IsEmpty() bool {
 	return pq.Len() == 0
 }
 
-// Values returns an iter.Seq[V] of values in the priority queue in priority order
+// Remove removes and returns the element at index i from the priority queue
+func (pq Pq[V]) Remove(i int) V {
+	return heap.Remove(pq.Internal, i).(V)
+}
+
+// Clear removes all elements from the priority queue
+func (pq Pq[V]) Clear() {
+	pq.Internal.Items = []V{}
+}
+
+// Update updates the value at index i in the priority queue and re-establishes
+// the heap ordering with a call to Fix. As per the container/heap documentation,
+// changing the value of the element at index i and then calling Fix is equivalent to,
+// but less expensive than, calling Remove(i) followed by a Push of the new value
+func (pq Pq[V]) Update(i int, val V) {
+	pq.Internal.Items[i] = val
+	heap.Fix(pq.Internal, i)
+}
+
+// UpdateLess updates the less function used to determine the priority of elements in the priority queue
+// and re-establishes the heap ordering. This is useful when the priority of elements in the priority queue
+// is determined by a function that changes over time
+func (pq Pq[V]) UpdateLess(less func(item1, item2 V) bool) {
+	pq.Internal.less = less
+	heap.Init(pq.Internal)
+}
+
+// UpdateAll updates all values in the priority queue and re-establishes the heap ordering
+func (pq Pq[V]) UpdateAll(vals ...V) {
+	pq.Internal.Items = vals
+	heap.Init(pq.Internal)
+}
+
+// ----------------------------------------------------------------------------
+// Utils
+// ----------------------------------------------------------------------------
+
+// All returns an iter.Seq[V] of values in the priority queue in priority order
 // that can be used to iterate over the values in the priority queue
-func (pq *Pq[V]) Values() iter.Seq[V] {
+func (pq Pq[V]) All() iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for !pq.IsEmpty() {
 			if !yield(pq.Pop()) {
@@ -130,11 +168,11 @@ func (pq *Pq[V]) Values() iter.Seq[V] {
 	}
 }
 
-// All returns an iter.Seq2[int, V] of values in the priority queue in priority order
+// Enumerate returns an iter.Seq2[int, V] of values in the priority queue in priority order
 // that can be used to iterate over the values in the priority queue with their index
-func (pq *Pq[V]) All() iter.Seq2[int, V] {
+func (pq Pq[V]) Enumerate(start int) iter.Seq2[int, V] {
 	return func(yield func(int, V) bool) {
-		i := 0
+		i := start
 		for !pq.IsEmpty() {
 			if !yield(i, pq.Pop()) {
 				return
@@ -144,35 +182,7 @@ func (pq *Pq[V]) All() iter.Seq2[int, V] {
 	}
 }
 
-// Remove removes and returns the element at index i from the priority queue
-func (pq *Pq[V]) Remove(i int) V {
-	return heap.Remove(pq.Internal, i).(V)
-}
-
-// Clear removes all elements from the priority queue
-func (pq *Pq[V]) Clear() {
-	pq.Internal.Items = []V{}
-}
-
-// Update updates the value at index i in the priority queue and re-establishes
-// the heap ordering with a call to Fix. As per the container/heap documentation,
-// changing the value of the element at index i and then calling Fix is equivalent to,
-// but less expensive than, calling Remove(i) followed by a Push of the new value
-func (pq *Pq[V]) Update(i int, val V) {
-	pq.Internal.Items[i] = val
-	heap.Fix(pq.Internal, i)
-}
-
-// UpdateLess updates the less function used to determine the priority of elements in the priority queue
-// and re-establishes the heap ordering. This is useful when the priority of elements in the priority queue
-// is determined by a function that changes over time
-func (pq *Pq[V]) UpdateLess(less func(item1, item2 V) bool) {
-	pq.Internal.less = less
-	heap.Init(pq.Internal)
-}
-
-// UpdateAll updates all values in the priority queue and re-establishes the heap ordering
-func (pq *Pq[V]) UpdateAll(vals ...V) {
-	pq.Internal.Items = vals
-	heap.Init(pq.Internal)
+// String returns a string representation of the priority queue
+func (pq Pq[V]) String() string {
+	return fmt.Sprint(pq.Internal.Items)
 }

@@ -27,35 +27,26 @@ func (s *Stack[V]) Pop() V {
 }
 
 // IsEmpty returns true if the stack is empty
-func (s *Stack[V]) IsEmpty() bool {
-	return len(*s) == 0
+func (s Stack[V]) IsEmpty() bool {
+	return len(s) == 0
 }
 
 // Peek returns the top value of the stack without removing it
-func (s *Stack[V]) Peek() V {
-	return (*s)[len(*s)-1]
+func (s Stack[V]) Peek() V {
+	return s[len(s)-1]
 }
 
 // Len returns the number of elements in the stack
-func (s *Stack[V]) Len() int {
-	return len(*s)
+func (s Stack[V]) Len() int {
+	return len(s)
 }
 
-// All returns a Seq2[int, V] of all the elements in the stack
-// and their index. The iteration empties the stack
-func (s *Stack[V]) All() iter.Seq2[int, V] {
-	return func(yield func(int, V) bool) {
-		i := 0
-		for !s.IsEmpty() {
-			if !yield(i, s.Pop()) {
-				return
-			}
-			i++
-		}
-	}
-}
+// ----------------------------------------------------------------------------
+// Utils
+// ----------------------------------------------------------------------------
 
-func (s *Stack[V]) Values() iter.Seq[V] {
+// All returns a iter.Seq[V] of all the elements in the stack.
+func (s *Stack[V]) All() iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for !s.IsEmpty() {
 			if !yield(s.Pop()) {
@@ -65,23 +56,21 @@ func (s *Stack[V]) Values() iter.Seq[V] {
 	}
 }
 
+// Enumerate returns an iter.Seq2[int, V] of all the elements in the stack
+// and their index. The iteration empties the stack
+func (s *Stack[V]) Enumerate(start int) iter.Seq2[int, V] {
+	return func(yield func(int, V) bool) {
+		i := start
+		for !s.IsEmpty() {
+			if !yield(i, s.Pop()) {
+				return
+			}
+			i++
+		}
+	}
+}
+
 // String returns a string representation of the stack
-// The String() method is intended to be used for debugging purposes
-// only as it needs to consume the stack while creating a copy of it
 func (s Stack[V]) String() string {
-	str := "["
-	temp := NewStack[V]()
-	for !s.IsEmpty() {
-		v := s.Pop()
-		str += fmt.Sprintf("%v ", v)
-		temp.Push(v)
-	}
-	for v := range temp.Values() {
-		s.Push(v)
-	}
-	if len(str) > 1 {
-		str = str[:len(str)-1]
-	}
-	str += "]"
-	return str
+	return fmt.Sprint([]V(s))
 }

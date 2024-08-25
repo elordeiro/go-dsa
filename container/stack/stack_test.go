@@ -78,7 +78,7 @@ func TestStackAll(t *testing.T) {
 	}
 
 	i := 99
-	s.Values()(func(v int) bool {
+	s.All()(func(v int) bool {
 		if v != i {
 			t.Error("All should iterate in reverse order")
 		}
