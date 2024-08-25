@@ -41,9 +41,21 @@ func (s *Stack[V]) Len() int {
 	return len(*s)
 }
 
-// All iterates over all the elements in the stack
-// The iteration is done in LIFO order and empties the stack
-func (s *Stack[V]) All() iter.Seq[V] {
+// All returns a Seq2[int, V] of all the elements in the stack
+// and their index. The iteration empties the stack
+func (s *Stack[V]) All() iter.Seq2[int, V] {
+	return func(yield func(int, V) bool) {
+		i := 0
+		for !s.IsEmpty() {
+			if !yield(i, s.Pop()) {
+				return
+			}
+			i++
+		}
+	}
+}
+
+func (s *Stack[V]) Values() iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for !s.IsEmpty() {
 			if !yield(s.Pop()) {
@@ -64,7 +76,7 @@ func (s Stack[V]) String() string {
 		str += fmt.Sprintf("%v ", v)
 		temp.Push(v)
 	}
-	for v := range temp.All() {
+	for v := range temp.Values() {
 		s.Push(v)
 	}
 	if len(str) > 1 {

@@ -56,7 +56,23 @@ func ExampleStack_Len() {
 
 func ExampleStack_All() {
 	s := stk.NewStack(1, 2, 3, 4, 5)
-	s.All()(func(v int) bool {
+	s.All()(func(i int, v int) bool {
+		fmt.Println(i, v)
+		return true
+	})
+	fmt.Println(s.IsEmpty())
+	// Output:
+	// 0 5
+	// 1 4
+	// 2 3
+	// 3 2
+	// 4 1
+	// true
+}
+
+func ExampleStack_Values() {
+	s := stk.NewStack(1, 2, 3, 4, 5)
+	s.Values()(func(v int) bool {
 		fmt.Println(v)
 		return true
 	})
