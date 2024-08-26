@@ -83,3 +83,25 @@ func TestDelete(t *testing.T) {
 		}
 	}
 }
+
+func TestSearch(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		search   int
+		expected bool
+	}{
+		{[]int{1, 2, 3, 4, 5}, 0, false},
+		{[]int{1, 2, 3, 4, 5}, 1, true},
+		{[]int{1, 2, 3, 4, 5}, 2, true},
+		{[]int{1, 2, 3, 4, 5}, 3, true},
+		{[]int{1, 2, 3, 4, 5}, 4, true},
+		{[]int{1, 2, 3, 4, 5}, 5, true},
+	}
+
+	for _, test := range tests {
+		b := bt.NewBst(test.nums...)
+		if b.Search(test.search) != test.expected {
+			t.Errorf("Expected %v, but got %v", test.expected, b.Search(test.search))
+		}
+	}
+}

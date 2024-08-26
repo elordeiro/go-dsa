@@ -121,6 +121,23 @@ func (root *Tree[V]) Delete(val V) *Tree[V] {
 	return root
 }
 
+// Search searches for a value in the AVL tree and returns true if it is found
+func (root *Tree[V]) Search(val V) bool {
+	if root == nil {
+		return false
+	}
+
+	if val < root.Val {
+		return root.Left.Search(val)
+	}
+
+	if val > root.Val {
+		return root.Right.Search(val)
+	}
+
+	return true
+}
+
 // min returns the minimum value in the tree
 func (root *Tree[V]) min() *Tree[V] {
 	if root.Left == nil {

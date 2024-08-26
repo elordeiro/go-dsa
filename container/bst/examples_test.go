@@ -26,6 +26,12 @@ func ExampleTree_Delete() {
 	// Output: /\[1 2 4 5]
 }
 
+func ExampleTree_Search() {
+	b := bt.NewBst(3, 2, 1, 4, 5)
+	fmt.Println(b.Search(3))
+	// Output: true
+}
+
 func ExampleTree_Enumerate() {
 	b := bt.NewBst(3, 2, 1, 4, 5)
 	for i, v := range b.Enumerate(0, b.Inorder()) {
