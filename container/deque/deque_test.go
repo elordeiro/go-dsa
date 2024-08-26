@@ -126,3 +126,53 @@ func TestDequeString(t *testing.T) {
 		}
 	}
 }
+
+func TestDequeBackwards(t *testing.T) {
+	type test struct {
+		nums     []int
+		expected []int
+	}
+
+	tests := []test{
+		{[]int{1, 2, 3, 4}, []int{4, 3, 2, 1}},
+		{[]int{1, 2, 3}, []int{3, 2, 1}},
+		{[]int{1, 2}, []int{2, 1}},
+		{[]int{1}, []int{1}},
+		{[]int{}, []int{}},
+	}
+
+	for _, tst := range tests {
+		i := 0
+		d := dq.NewDeque(tst.nums...)
+		for v := range d.Backwards() {
+			if v != tst.expected[i] {
+				t.Errorf("Expected %v, got %v", tst.expected[i], v)
+			}
+			i++
+		}
+	}
+}
+
+func TestDequeEnumerateBackwards(t *testing.T) {
+	type test struct {
+		nums     []int
+		expected [][]int
+	}
+
+	tests := []test{
+		{[]int{1, 2, 3, 4}, [][]int{{0, 4}, {1, 3}, {2, 2}, {3, 1}}},
+		{[]int{1, 2, 3}, [][]int{{0, 3}, {1, 2}, {2, 1}}},
+		{[]int{1, 2}, [][]int{{0, 2}, {1, 1}}},
+		{[]int{1}, [][]int{{0, 1}}},
+		{[]int{}, [][]int{}},
+	}
+
+	for _, tst := range tests {
+		d := dq.NewDeque(tst.nums...)
+		for i, v := range d.EnumerateBackwards(0) {
+			if v != tst.expected[i][1] {
+				t.Errorf("Expected %v, got %v", tst.expected[i], v)
+			}
+		}
+	}
+}

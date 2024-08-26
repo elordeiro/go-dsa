@@ -116,29 +116,56 @@ func (dq *Deque[V]) Len() int {
 // ----------------------------------------------------------------------------
 
 // All returns an iter.Seq[V] that yields all elements in the deque
+// It returns a single use iterator
 func (dq *Deque[V]) All() iter.Seq[V] {
 	return func(yield func(V) bool) {
-		cur := dq.front
-		for cur != nil {
-			if !yield(cur.val) {
+		for !dq.IsEmpty() {
+			if !yield(dq.PopFront()) {
 				return
 			}
-			cur = cur.next
+		}
+	}
+}
+
+// Backwards returns an iter.Seq[V] that yields all elements in the deque in reverse order
+// as if the deque was a stack.
+// It returns a single use iterator
+func (dq *Deque[V]) Backwards() iter.Seq[V] {
+	return func(yield func(V) bool) {
+		for !dq.IsEmpty() {
+			if !yield(dq.PopBack()) {
+				return
+			}
 		}
 	}
 }
 
 // Enumerate returns an iter.Seq2[int, V] that yields all elements in the deque
-// along with their index starting from the provided start index
+// along with their index starting from the provided start index.
+// It returns a single use iterator
 func (dq *Deque[V]) Enumerate(start int) iter.Seq2[int, V] {
 	return func(yield func(int, V) bool) {
-		cur := dq.front
 		i := start
-		for cur != nil {
-			if !yield(i, cur.val) {
+		for !dq.IsEmpty() {
+			if !yield(i, dq.PopFront()) {
 				return
 			}
-			cur = cur.next
+			i++
+		}
+	}
+}
+
+// EnumerateBackwards returns an iter.Seq2[int, V] that yields all elements in the deque
+// along with their index starting from the provided start index in reverse order
+// as if the deque was a stack.
+// It returns a single use iterator
+func (dq *Deque[V]) EnumerateBackwards(start int) iter.Seq2[int, V] {
+	return func(yield func(int, V) bool) {
+		i := start
+		for !dq.IsEmpty() {
+			if !yield(i, dq.PopBack()) {
+				return
+			}
 			i++
 		}
 	}

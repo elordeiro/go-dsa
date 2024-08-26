@@ -73,3 +73,57 @@ func ExampleDeque_IsEmpty() {
 	// true
 	// false
 }
+
+func ExampleDeque_All() {
+	d := dq.NewDeque(1, 2, 3, 4)
+	for v := range d.All() {
+		fmt.Println(v)
+	}
+	// Output:
+	// 1
+	// 2
+	// 3
+	// 4
+}
+
+func ExampleDeque_Enumerate() {
+	d := dq.NewDeque(1, 2, 3, 4)
+	for i, v := range d.Enumerate(0) {
+		fmt.Println(i, v)
+	}
+	// Output:
+	// 0 1
+	// 1 2
+	// 2 3
+	// 3 4
+}
+
+func ExampleDeque_Backwards() {
+	d := dq.NewDeque(1, 2, 3, 4)
+	for v := range d.Backwards() {
+		fmt.Println(v)
+	}
+	// Output:
+	// 4
+	// 3
+	// 2
+	// 1
+}
+
+func ExampleDeque_EnumerateBackwards() {
+	d := dq.NewDeque(1, 2, 3, 4)
+	for i, v := range d.EnumerateBackwards(0) {
+		fmt.Println(i, v)
+	}
+	// Output:
+	// 0 4
+	// 1 3
+	// 2 2
+	// 3 1
+}
+
+func ExampleDeque_String() {
+	d := dq.NewDeque(1, 2, 3, 4)
+	fmt.Println(d)
+	// Output: <->[1 2 3 4]
+}
