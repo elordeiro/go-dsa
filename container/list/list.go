@@ -11,6 +11,15 @@ type List[V any] struct {
 	Next *List[V]
 }
 
+// Pos is a position in the list. It is used to iterate over the elements in the list
+// while allowing the elements to be deleted.
+type Pos[V any] struct {
+	Node *List[V]
+	prev *List[V]
+}
+
+// ----------------------------------------------------------------------------
+// Public API
 // ----------------------------------------------------------------------------
 
 // NewList creates a new list. If vals are provided, they are added to the list,
@@ -113,6 +122,31 @@ func (l *List[V]) All() iter.Seq[V] {
 			l = l.Next
 		}
 	}
+}
+
+// Positions returns an iter.Seq[pos[V]] that yields the position of each element in the list
+// and allows the list to be modified as it is iterated over. For better performance while allowing
+// for no mutation use All()
+func Positions[V any](list **List[V]) iter.Seq[*Pos[V]] {
+	var defV V
+	head0 := &List[V]{defV, *list}
+	head := list
+	pos := &Pos[V]{*head, head0}
+	return func(yield func(*Pos[V]) bool) {
+		for pos.Node != nil {
+			if !yield(pos) {
+				return
+			}
+			pos = &Pos[V]{pos.Node.Next, pos.Node}
+		}
+		*head = head0.Next
+	}
+}
+
+// Delete removes the element at the current position from the list
+// and returns the new list
+func (p *Pos[V]) Delete() {
+	p.prev.Next = p.Node.Next
 }
 
 // Enumerate returns an iter.Seq2[int, V] that yields the index and value of each element in the list

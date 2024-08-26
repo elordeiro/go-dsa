@@ -226,3 +226,81 @@ func TestEnumerate(t *testing.T) {
 		})
 	}
 }
+
+func TestTraverseAndDelete(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		val      int
+		expected []int
+	}{
+		{[]int{1, 2, 3}, 2, []int{1, 3}},
+		{[]int{1, 2, 3}, 1, []int{2, 3}},
+		{[]int{1, 2, 3}, 3, []int{1, 2}},
+		{[]int{1, 2, 3}, 4, []int{1, 2, 3}},
+		{[]int{1}, 1, []int{}},
+	}
+
+	for _, test := range tests {
+		testname := "Traverse List"
+		t.Run(testname, func(t *testing.T) {
+			l := list.NewList(test.nums...)
+			for p := range list.Positions(&l) {
+				if p.Node.Val == test.val {
+					p.Delete()
+				}
+			}
+			if len(test.expected) == 0 && l != nil {
+				t.Errorf("Actual   : %v", l)
+				t.Errorf("Expected : %v", nil)
+				return
+			}
+			for _, val := range test.expected {
+				if val != l.Val {
+					t.Errorf("Actual   : %v", l.Val)
+					t.Errorf("Expected : %v", val)
+				}
+				l = l.Next
+			}
+		})
+	}
+}
+
+func TestTraverseAndUpdate(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		val      int
+		newVal   int
+		expected []int
+	}{
+		{[]int{1, 2, 3}, 2, 0, []int{1, 0, 3}},
+		{[]int{1, 2, 3}, 1, 0, []int{0, 2, 3}},
+		{[]int{1, 2, 3}, 3, 0, []int{1, 2, 0}},
+		{[]int{1, 2, 3}, 4, 0, []int{1, 2, 3}},
+		{[]int{1}, 1, 0, []int{0}},
+		{[]int{}, 1, 0, []int{}},
+	}
+
+	for _, test := range tests {
+		testname := "Traverse List"
+		t.Run(testname, func(t *testing.T) {
+			l := list.NewList(test.nums...)
+			for p := range list.Positions(&l) {
+				if p.Node.Val == test.val {
+					p.Node.Val = test.newVal
+				}
+			}
+			if len(test.expected) == 0 && l != nil {
+				t.Errorf("Actual   : %v", l)
+				t.Errorf("Expected : %v", nil)
+				return
+			}
+			for _, val := range test.expected {
+				if val != l.Val {
+					t.Errorf("Actual   : %v", l.Val)
+					t.Errorf("Expected : %v", val)
+				}
+				l = l.Next
+			}
+		})
+	}
+}
