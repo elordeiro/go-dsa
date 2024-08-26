@@ -46,6 +46,7 @@ func (s Stack[V]) Len() int {
 // ----------------------------------------------------------------------------
 
 // All returns a iter.Seq[V] of all the elements in the stack.
+// It returns a sigle use iterator.
 func (s *Stack[V]) All() iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for !s.IsEmpty() {
@@ -58,6 +59,7 @@ func (s *Stack[V]) All() iter.Seq[V] {
 
 // Enumerate returns an iter.Seq2[int, V] of all the elements in the stack
 // and their index. The iteration empties the stack
+// It returns a sigle use iterator.
 func (s *Stack[V]) Enumerate(start int) iter.Seq2[int, V] {
 	return func(yield func(int, V) bool) {
 		i := start

@@ -157,7 +157,8 @@ func (pq Pq[V]) UpdateAll(vals ...V) {
 // ----------------------------------------------------------------------------
 
 // All returns an iter.Seq[V] of values in the priority queue in priority order
-// that can be used to iterate over the values in the priority queue
+// that can be used to iterate over the values in the priority queue.
+// It returns a single use iterator
 func (pq Pq[V]) All() iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for !pq.IsEmpty() {
@@ -169,7 +170,8 @@ func (pq Pq[V]) All() iter.Seq[V] {
 }
 
 // Enumerate returns an iter.Seq2[int, V] of values in the priority queue in priority order
-// that can be used to iterate over the values in the priority queue with their index
+// that can be used to iterate over the values in the priority queue with their index.
+// It returns a single use iterator
 func (pq Pq[V]) Enumerate(start int) iter.Seq2[int, V] {
 	return func(yield func(int, V) bool) {
 		i := start
