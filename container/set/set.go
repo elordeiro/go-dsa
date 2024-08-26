@@ -79,6 +79,17 @@ func (s Set[K]) Difference(other Set[K]) Set[K] {
 // Utils
 // ----------------------------------------------------------------------------
 
+// All returns an iter.Seq[K] of all elements in the set
+func (s Set[K]) All() iter.Seq[K] {
+	return func(yield func(K) bool) {
+		for k := range s {
+			if !yield(k) {
+				return
+			}
+		}
+	}
+}
+
 // Enumerate returns an iter.Seq2[int, K] of index-value pairs in the set
 func (s Set[K]) Enumerate(start int) iter.Seq2[int, K] {
 	return func(yield func(int, K) bool) {
@@ -88,17 +99,6 @@ func (s Set[K]) Enumerate(start int) iter.Seq2[int, K] {
 				return
 			}
 			i++
-		}
-	}
-}
-
-// All returns an iter.Seq[K] of all elements in the set
-func (s Set[K]) All() iter.Seq[K] {
-	return func(yield func(K) bool) {
-		for k := range s {
-			if !yield(k) {
-				return
-			}
 		}
 	}
 }

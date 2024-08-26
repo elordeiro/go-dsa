@@ -116,3 +116,16 @@ func TestEnumerate(t *testing.T) {
 		t.Errorf("Expected 3, got %d", len(result))
 	}
 }
+
+func TestDelete(t *testing.T) {
+	s := set.NewSet(1, 2, 3)
+	for v := range s.All() {
+		if v == 1 {
+			s.Remove(v)
+		}
+	}
+
+	if s.Contains(1) {
+		t.Errorf("Expected false, got true")
+	}
+}
