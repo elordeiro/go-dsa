@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "go",
+            "label": "go: build package",
+            "command": "build",
+            "args": ["${fileDirname}"],
+            "problemMatcher": ["$go"],
+            "group": "build",
+            "detail": "cd /Users/estevaolordeiro/GitHub/goext; go build ${fileDirname}"
+        },
+        {
+            // build c file
+            "label": "gcc build active file",
+            "type": "shell",
+            "command": "/usr/bin/gcc",
+            "args": ["-g", "${file}", "-o", "${fileDirname}/a.out"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Generated task by Debugger."
+        }
+    ]
+}
