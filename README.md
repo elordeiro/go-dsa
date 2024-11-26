@@ -1,57 +1,27 @@
 # Go Module
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/go.svg)](https://pkg.go.dev/github.com/elordeiro/go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/goext.svg)](https://pkg.go.dev/github.com/elordeiro/go)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](../LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/github.com/elordeiro/go)](https://goreportcard.com/report/github.com/elordeiro/go)
-[![Release](https://img.shields.io/github/v/release/elordeiro/go)]()
+[![Go Report Card](https://goreportcard.com/badge/github.com/elordeiro/goext)](https://goreportcard.com/report/github.com/elordeiro/goext)
+[![Release](https://img.shields.io/github/v/release/elordeiro/goext)]()
 
 ## Overview
 
-This repository contains a collection of go packages that implement some common data structures and algorithms. The library is designed to be modular and easy to use, with each package focusing on a specific data structure, algorithm or some other language feature. The repository also includes iterators that leverage the new Go 1.23 features, along with comprehensive tests for each package.
+This repository contains a collection of go packages that are meant to extend the standard library. The library is designed to be modular and easy to use, with each package focusing on a specific data structure, algorithm, or some other language feature. The repository also includes iterators that leverage the new Go 1.23 features, along with comprehensive tests for each package.
 
 ## Installation
 
 To install this module, run:
 
 ```bash
-go get github.com/elordeiro/go/
+go get github.com/elordeiro/goext/
 ```
 
 You can import specific packages as needed:
 
 ```go
-import "github.com/elordeiro/go/container/iters"
+import "github.com/elordeiro/goext/seqs"
 ```
-
-or
-
-```go
-import it "github.com/elordeiro/go/container/iters"
-```
-
-## Packages
-
-### Container
-
-The [`container`](./container/) collection contains various data structures, each implemented as its own package.
-
--   [BST](https://pkg.go.dev/github.com/elordeiro/go/container/bst)
--   [Deque](https://pkg.go.dev/github.com/elordeiro/go/container/deque)
--   [List](https://pkg.go.dev/github.com/elordeiro/go/container/list)
--   [PQ (Priority Queue)](https://pkg.go.dev/github.com/elordeiro/go/container/pq)
--   [Set](https://pkg.go.dev/github.com/elordeiro/go/container/set)
--   [Stack](https://pkg.go.dev/github.com/elordeiro/go/container/stack)
-
-### Iters
-
-The [iters](./iters/) package provides helpful iterators that leverage the new Go 1.23 language features. These iterators can be used to traverse or transform collections in a concise and idiomatic manner.
-
--   **Features:**
-    -   Range-based iteration
-    -   Filtering and mapping operations
-    -   Custom iterators for specific data structures
-    -   Lazy evaluation for efficient processing
-    -   Much more!
 
 ## Contributing
 
