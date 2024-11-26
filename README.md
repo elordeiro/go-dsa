@@ -1,6 +1,6 @@
 # Go Module
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/goext.svg)](https://pkg.go.dev/github.com/elordeiro/go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/elordeiro/goext.svg)](https://pkg.go.dev/github.com/elordeiro/goext)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](../LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/elordeiro/goext)](https://goreportcard.com/report/github.com/elordeiro/goext)
 [![Release](https://img.shields.io/github/v/release/elordeiro/goext)]()
